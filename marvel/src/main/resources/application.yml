@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/marvel?useSSL=false&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+    username: mysql
+    password: mysql
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database: mysql
+  application:
+    name: marvel
+  liquibase:
+    change-log: classpath:liquibase/master.xml
+    contexts: "develop"
