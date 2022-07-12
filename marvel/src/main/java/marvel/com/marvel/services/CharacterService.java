@@ -1,5 +1,8 @@
 package marvel.com.marvel.services;
 
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +25,7 @@ public class CharacterService {
 
     private final CharacterRepository characterRepository;
     private final ComicsRepository comicsRepository;
+    private final RunnableService runnableService;
 
 
     public Page<CharacterEntity> getAllCharacters(Pageable pageable) {
@@ -37,12 +41,15 @@ public class CharacterService {
         return comicsRepository.findAllByCharacters(getCharacterById(id), pageable);
     }
 
-
     public CharacterEntity createNewCharacter(CharacterDtoIn characterDto) {
         return characterRepository.save(new CharacterEntity(characterDto));
     }
 
     public CharacterEntity changeCharacterById(Long id, CharacterDtoIn characterDto) {
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(0, 1,
+            0L, TimeUnit.SECONDS, new SynchronousQueue<>());
+        threadPoolExecutor.execute(runnableService);
+        log.info("Execute...");
         CharacterEntity characterEntity = getCharacterById(id);
         characterEntity.setName(characterDto.getName());
         characterEntity.setComics(characterDto.getComics().stream().map(comicsId -> comicsRepository.findById(comicsId)
