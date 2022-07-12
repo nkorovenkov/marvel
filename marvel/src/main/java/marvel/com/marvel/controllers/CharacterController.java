@@ -1,6 +1,5 @@
 package marvel.com.marvel.controllers;
 
-import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import marvel.com.marvel.dto.CharacterDto;
 import marvel.com.marvel.dto.CharacterDtoIn;
@@ -13,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,8 +41,13 @@ public class CharacterController {
         return dtoConverter.simpleConvert(characterService.getComicsThatHaveCharacterById(id, pageable), ComicsDto.class);
     }
 
-//    @PostMapping
-//    public CharacterDto createCharacter(@RequestBody CharacterDtoIn characterDto) throws IOException {
-//        return dtoConverter.simpleConvert(characterService.createCharacter(characterDto), CharacterDto.class);
-//    }
+    @PostMapping
+    public CharacterDto createNewCharacter(@RequestBody CharacterDtoIn characterDto) {
+        return dtoConverter.simpleConvert(characterService.createNewCharacter(characterDto), CharacterDto.class);
+    }
+
+    @PutMapping("/{id}")
+    public CharacterDto changeCharacterById(@PathVariable Long id, @RequestBody CharacterDtoIn characterDto) {
+        return dtoConverter.simpleConvert(characterService.changeCharacterById(id, characterDto), CharacterDto.class);
+    }
 }

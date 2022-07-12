@@ -1,14 +1,11 @@
 package marvel.com.marvel.services;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import marvel.com.marvel.dto.CharacterDtoIn;
 import marvel.com.marvel.entities.CharacterEntity;
 import marvel.com.marvel.entities.ComicsEntity;
-import marvel.com.marvel.entities.ImageEntity;
 import marvel.com.marvel.exceptions.MarvelException;
 import marvel.com.marvel.repositories.CharacterRepository;
 import marvel.com.marvel.repositories.ComicsRepository;
@@ -36,27 +33,21 @@ public class CharacterService {
             .orElseThrow(() -> new MarvelException(HttpStatus.NOT_FOUND, "Cannot find character with id = " + id));
     }
 
-//    public CharacterEntity createCharacter(CharacterDtoIn characterDto) throws IOException {
-//        CharacterEntity character = new CharacterEntity(characterDto);
-//        MultipartFile file = characterDto.getImage();
-//        if (file.getSize() != 0) {
-//            ImageEntity image = toImageEntity(file);
-//            character.setImage(image);
-//        }
-//        log.info("Create new character: {}", character.getName());
-//        return characterRepository.save(character);
-//    }
-//
-//    private ImageEntity toImageEntity(MultipartFile file) throws IOException {
-//        ImageEntity image = new ImageEntity();
-//        List<Byte> list = new ArrayList<>();
-//        for (Byte one_byte : file.getBytes()) {
-//            list.add(one_byte);
-//        }
-//        return image;
-//    }
-
     public Page<ComicsEntity> getComicsThatHaveCharacterById(Long id, Pageable pageable) {
         return comicsRepository.findAllByCharacters(getCharacterById(id), pageable);
+    }
+
+
+    public CharacterEntity createNewCharacter(CharacterDtoIn characterDto) {
+        return characterRepository.save(new CharacterEntity(characterDto));
+    }
+
+    public CharacterEntity changeCharacterById(Long id, CharacterDtoIn characterDto) {
+        CharacterEntity characterEntity = getCharacterById(id);
+        characterEntity.setName(characterDto.getName());
+        characterEntity.setComics(characterDto.getComics().stream().map(comicsId -> comicsRepository.findById(comicsId)
+                .orElseThrow(() -> new MarvelException(HttpStatus.NOT_FOUND, "Cannot find comics with id = " + comicsId)))
+            .collect(Collectors.toList()));
+        return characterRepository.save(characterEntity);
     }
 }

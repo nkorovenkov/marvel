@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString.Exclude;
+import marvel.com.marvel.dto.ComicsDtoIn;
 
 @Table(name = "comics")
 @Getter
@@ -28,4 +29,8 @@ public class ComicsEntity {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "comics")
     @Exclude
     private List<CharacterEntity> characters;
+
+    public ComicsEntity(ComicsDtoIn comicsDto) {
+        setTitle(comicsDto.getTitle());
+    }
 }

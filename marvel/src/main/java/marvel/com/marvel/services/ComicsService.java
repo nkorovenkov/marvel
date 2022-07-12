@@ -1,6 +1,8 @@
 package marvel.com.marvel.services;
 
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import marvel.com.marvel.dto.ComicsDtoIn;
 import marvel.com.marvel.entities.CharacterEntity;
 import marvel.com.marvel.entities.ComicsEntity;
 import marvel.com.marvel.exceptions.MarvelException;
@@ -30,5 +32,17 @@ public class ComicsService {
 
     public Page<CharacterEntity> getCharactersThatHaveComicsById(Long id, Pageable pageable) {
         return characterRepository.findAllByComics(getComicsById(id), pageable);
+    }
+
+    public ComicsEntity createNewComics(ComicsDtoIn comicsDto) {
+        return comicsRepository.save(new ComicsEntity(comicsDto));
+    }
+
+    public ComicsEntity changeComicsById(Long id, ComicsDtoIn comicsDto) {
+        ComicsEntity comics = getComicsById(id);
+        comics.setTitle(comicsDto.getTitle());
+        comics.setCharacters(comicsDto.getCharacters().stream().map(characterId -> characterRepository.findById(characterId).orElseThrow(
+            () -> new MarvelException(HttpStatus.NOT_FOUND, "Cannot find character with id = " + id))).collect(Collectors.toList()));
+        return comicsRepository.save(comics);
     }
 }

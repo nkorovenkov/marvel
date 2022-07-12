@@ -5,7 +5,6 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @NoArgsConstructor
@@ -15,5 +14,4 @@ public class CharacterDtoIn {
 
     private String name;
     private List<Long> comics;
-    private MultipartFile image;
 }
