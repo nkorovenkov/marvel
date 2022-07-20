@@ -6,4 +6,5 @@
          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
   <include file="changelog/marvel-1.sql" relativeToChangelogFile="true"/>
+  <include file="changelog/marvel-2.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

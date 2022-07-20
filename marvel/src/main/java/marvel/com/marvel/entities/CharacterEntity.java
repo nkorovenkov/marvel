@@ -1,6 +1,7 @@
 package marvel.com.marvel.entities;
 
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -35,5 +36,31 @@ public class CharacterEntity {
         setName(characterDto.getName());
     }
 
+    @Override
+    public String toString() {
+        return "CharacterEntity{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", comics=" + comics +
+            '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        CharacterEntity that = (CharacterEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(comics,
+            that.comics);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, comics);
+    }
 }
 

@@ -24,7 +24,6 @@ create table character_comics
     constraint FKe7mrbuo8w82fuo5ee11jwyo26
         foreign key (comics_id) references comics (id)
 );
-
 --rollback DROP TABLE character_comics;
 --rollback DROP TABLE comics;
 --rollback DROP TABLE `character`;
