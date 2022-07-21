@@ -12,3 +12,8 @@ spring:
   liquibase:
     change-log: classpath:liquibase/master.xml
     contexts: "develop"
+    # App Properties
+marvel:
+  app:
+    jwtSecret: marvelSecretKey
+    jwtExpirationMs: 86400000

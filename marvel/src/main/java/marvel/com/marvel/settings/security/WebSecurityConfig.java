@@ -1,5 +1,6 @@
 package marvel.com.marvel.settings.security;
 
+
 import lombok.RequiredArgsConstructor;
 import marvel.com.marvel.settings.security.jwt.AuthEntryPointJwt;
 import marvel.com.marvel.settings.security.jwt.AuthTokenFilter;
@@ -11,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,10 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-     securedEnabled = true,
-     jsr250Enabled = true,
-    prePostEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -61,5 +60,38 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/swagger-resources",
+            "/swagger-resources/**");
+        web.ignoring().antMatchers("/", "/.js", "/.css", "/h2-console/", "/health", "/actuator/*", "/socket", "/assets/", "/profile/**");
+    }
+//    private final AuthTokenFilter authTokenFilter;
+//    private static final String[] AUTH_WHITELIST  = {
+//        "/authenticate",
+//        "/swagger-resources/**",
+//        "/swagger-ui/**",
+//        "/v3/api-docs",
+//        "/webjars/**"
+//    };
+//    @Override
+//    protected void configure(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity
+//            .cors()
+//            .and()
+//            .csrf()
+//            .disable()
+//            .headers()
+//            .frameOptions()
+//            .deny()
+//            .and()
+//            .authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll().
+//            anyRequest().authenticated().and().
+//            exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and().sessionManagement()
+//            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//        httpSecurity.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
+//    }
 }
+
 
