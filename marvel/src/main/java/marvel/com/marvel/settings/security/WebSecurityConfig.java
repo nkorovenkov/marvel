@@ -67,31 +67,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-resources/**");
         web.ignoring().antMatchers("/", "/.js", "/.css", "/h2-console/", "/health", "/actuator/*", "/socket", "/assets/", "/profile/**");
     }
-//    private final AuthTokenFilter authTokenFilter;
-//    private static final String[] AUTH_WHITELIST  = {
-//        "/authenticate",
-//        "/swagger-resources/**",
-//        "/swagger-ui/**",
-//        "/v3/api-docs",
-//        "/webjars/**"
-//    };
-//    @Override
-//    protected void configure(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity
-//            .cors()
-//            .and()
-//            .csrf()
-//            .disable()
-//            .headers()
-//            .frameOptions()
-//            .deny()
-//            .and()
-//            .authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll().
-//            anyRequest().authenticated().and().
-//            exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and().sessionManagement()
-//            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//        httpSecurity.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
-//    }
 }
 
 

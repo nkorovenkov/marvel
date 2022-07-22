@@ -1,4 +1,4 @@
-package marvel.com.marvel.services;
+package marvel.com.marvel.settings.security.services;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
