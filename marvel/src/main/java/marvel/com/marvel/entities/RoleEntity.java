@@ -26,9 +26,9 @@ public class RoleEntity {
     private Integer id;
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private ERole name;
+    private Role name;
 
-    public RoleEntity(ERole name) {
+    public RoleEntity(Role name) {
         setName(name);
     }
 }

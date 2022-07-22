@@ -20,8 +20,10 @@ public class ComicsService {
 
     private final ComicsRepository comicsRepository;
     private final CharacterRepository characterRepository;
+    private final UserService userService;
 
     public Page<ComicsEntity> getAllComics(Pageable pageable) {
+        System.out.println(userService.getCurrentUser().getUsername());
         return comicsRepository.findAll(pageable);
     }
 

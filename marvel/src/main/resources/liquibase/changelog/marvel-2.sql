@@ -15,7 +15,7 @@ create table roles
         primary key,
     name varchar(20) null
 );
-create table users_roles
+create table user_roles
 (
     user_id bigint not null,
     role_id     bigint not null,
@@ -24,6 +24,6 @@ create table users_roles
     constraint FKkYxVrapVcfG5NCwB7mbdkThPe
         foreign key (role_id) references roles (id)
 );
---rollback DROP TABLE users_roles;
+--rollback DROP TABLE user_roles;
 --rollback DROP TABLE roles;
 --rollback DROP TABLE users;
