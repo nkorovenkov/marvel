@@ -1,6 +1,5 @@
 package marvel.com.marvel.controllers;
 
-import java.util.concurrent.ExecutionException;
 import lombok.RequiredArgsConstructor;
 import marvel.com.marvel.dto.CharacterDto;
 import marvel.com.marvel.dto.CharacterDtoIn;

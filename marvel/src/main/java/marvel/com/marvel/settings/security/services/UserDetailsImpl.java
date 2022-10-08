@@ -2,14 +2,11 @@ package marvel.com.marvel.settings.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
 import marvel.com.marvel.entities.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
@@ -34,9 +31,7 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public static UserDetailsImpl build(UserEntity user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-            .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-            .collect(Collectors.toList());
+        GrantedAuthority authorities = user.getRole();
         return new UserDetailsImpl(
             user.getId(),
             user.getUsername(),

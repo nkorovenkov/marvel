@@ -1,19 +1,15 @@
 package marvel.com.marvel.controllers;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import marvel.com.marvel.entities.Role;
-import marvel.com.marvel.entities.RoleEntity;
+import marvel.com.marvel.entities.Privilege;
 import marvel.com.marvel.entities.UserEntity;
 import marvel.com.marvel.payload.request.LoginRequest;
 import marvel.com.marvel.payload.request.SignupRequest;
 import marvel.com.marvel.payload.response.JwtResponse;
 import marvel.com.marvel.payload.response.MessageResponse;
-import marvel.com.marvel.repositories.RoleRepository;
 import marvel.com.marvel.repositories.UserRepository;
 import marvel.com.marvel.settings.security.jwt.JwtUtils;
 import marvel.com.marvel.settings.security.services.UserDetailsImpl;
@@ -39,7 +35,7 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final Privilege roleRepository;
     private final PasswordEncoder encoder;
     private final JwtUtils jwtUtils;
 
@@ -73,38 +69,11 @@ public class AuthController {
                 .badRequest()
                 .body(new MessageResponse("Error: Email is already in use!"));
         }
-
-        UserEntity user = new UserEntity(signUpRequest.getUsername(),
-            signUpRequest.getEmail(),
+        UserEntity user = new UserEntity(signUpRequest.getUsername(), signUpRequest.getEmail(),
             encoder.encode(signUpRequest.getPassword()));
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<RoleEntity> roles = new HashSet<>();
-        if (strRoles == null) {
-            RoleEntity userRole = roleRepository.findByName(Role.ROLE_USER)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        RoleEntity adminRole = roleRepository.findByName(Role.ROLE_ADMIN)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-                        break;
-                    case "mod":
-                        RoleEntity modRole = roleRepository.findByName(Role.ROLE_MODERATOR)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-                        break;
-                    default:
-                        RoleEntity userRole = roleRepository.findByName(Role.ROLE_USER)
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
-        }
-        user.setRoles(roles);
+        user.setRole(signUpRequest.getRole());
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 }
+

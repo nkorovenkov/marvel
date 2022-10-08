@@ -8,22 +8,4 @@ create table users
     password varchar(120) null,
     username varchar(20) null
 );
-
-create table roles
-(
-    id    bigint auto_increment
-        primary key,
-    name varchar(20) null
-);
-create table user_roles
-(
-    user_id bigint not null,
-    role_id     bigint not null,
-    constraint FKdfstzCKCn65x308Hctnp1X5KX
-        foreign key (user_id) references users (id),
-    constraint FKkYxVrapVcfG5NCwB7mbdkThPe
-        foreign key (role_id) references roles (id)
-);
---rollback DROP TABLE user_roles;
---rollback DROP TABLE roles;
 --rollback DROP TABLE users;
